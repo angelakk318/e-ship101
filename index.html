@@ -3,9 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NewsPulse Pro</title>
+    <title>NewsPulse Pro - Development View</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;500;600;700&display=swap">
+    <style>
+        .iphone-frame {
+            width: 430px;
+            height: 932px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            background: white;
+            position: relative;
+        }
+
+        .iphone-frame::-webkit-scrollbar {
+            width: 0px;
+        }
+
+        .frame-label {
+            position: absolute;
+            top: -24px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .device-info {
+            position: absolute;
+            top: -48px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 12px;
+            color: #6b7280;
+        }
+    </style>
     <script>
         tailwind.config = {
             theme: {
@@ -16,12 +50,7 @@
                 }
             }
         }
-    </script>
-</head>
-<body class="bg-gray-50">
-    <div id="app" class="max-w-md mx-auto min-h-screen bg-white relative"></div>
 
-    <script>
         // Page Templates
         const pages = {
             login: `
@@ -36,7 +65,7 @@
                         <div class="space-y-4">
                             <input type="email" placeholder="Email" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:outline-none">
                             <input type="password" placeholder="Password" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:outline-none">
-                            <button onclick="showTopicsScreen()" class="w-full py-3 bg-blue-500 text-white rounded-xl font-semibold">Sign In</button>
+                            <button class="w-full py-3 bg-blue-500 text-white rounded-xl font-semibold">Sign In</button>
                             <button class="w-full py-3 bg-gray-100 text-blue-500 rounded-xl font-semibold">Create Account</button>
                         </div>
                     </div>
@@ -45,14 +74,14 @@
 
             topics: `
                 <div class="min-h-screen bg-white">
-                    <div class="fixed top-0 left-0 right-0 bg-white/90 backdrop-blur-lg z-50 px-4 py-3 flex items-center max-w-md mx-auto">
-                        <button onclick="showLoginPage()" class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center">
+                    <div class="sticky top-0 bg-white/90 backdrop-blur-lg z-50 px-4 py-3 flex items-center">
+                        <button class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center">
                             ←
                         </button>
                         <h2 class="text-lg font-semibold flex-1 text-center mr-8">Choose Topics & Sources</h2>
                     </div>
 
-                    <div class="pt-16 px-4">
+                    <div class="pt-4 px-4">
                         <div class="relative mb-6">
                             <input type="text" placeholder="Search topics or sources" class="w-full pl-10 pr-4 py-2 bg-gray-100 rounded-xl">
                             <span class="absolute left-3 top-1/2 -translate-y-1/2">🔍</span>
@@ -88,7 +117,7 @@
                             </div>
                         </div>
 
-                        <button onclick="showNewsHeadlines()" class="fixed bottom-6 left-4 right-4 py-4 bg-black text-white rounded-xl font-semibold max-w-md mx-auto">
+                        <button class="sticky bottom-6 left-4 right-4 py-4 bg-black text-white rounded-xl font-semibold w-full">
                             Continue to News
                         </button>
                     </div>
@@ -108,7 +137,7 @@
                     </div>
 
                     <div class="p-4 space-y-4">
-                        <div class="bg-white rounded-2xl overflow-hidden" onclick="showNewsContext()">
+                        <div class="bg-white rounded-2xl overflow-hidden">
                             <img src="https://source.unsplash.com/800x400/daily?technology" alt="Tech news" class="w-full h-40 object-cover">
                             <div class="p-4">
                                 <h3 class="text-lg font-semibold mb-3">Global Tech Giants Announce AI Safety Coalition</h3>
@@ -131,7 +160,7 @@
                             </div>
                         </div>
 
-                        <div class="bg-white rounded-2xl overflow-hidden" onclick="showNewsContext()">
+                        <div class="bg-white rounded-2xl overflow-hidden">
                             <img src="https://source.unsplash.com/800x400/daily?climate" alt="Climate news" class="w-full h-40 object-cover">
                             <div class="p-4">
                                 <h3 class="text-lg font-semibold mb-3">Climate Summit Reaches Historic Agreement</h3>
@@ -159,14 +188,14 @@
 
             context: `
                 <div class="min-h-screen bg-gray-50">
-                    <div class="fixed top-0 left-0 right-0 bg-white/90 backdrop-blur-lg z-50 px-4 py-3 flex items-center max-w-md mx-auto">
-                        <button onclick="showNewsHeadlines()" class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center">
+                    <div class="sticky top-0 bg-white/90 backdrop-blur-lg z-50 px-4 py-3 flex items-center">
+                        <button class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center">
                             ←
                         </button>
                         <h2 class="text-lg font-semibold ml-4">Context & Opinions</h2>
                     </div>
 
-                    <div class="pt-16 px-4 pb-8">
+                    <div class="pt-4 px-4 pb-8">
                         <div class="bg-gray-100 rounded-2xl p-6 mb-6">
                             <h3 class="font-semibold mb-3">Background Context</h3>
                             <p class="text-sm leading-relaxed">
@@ -207,75 +236,122 @@
             `
         };
 
-        // Navigation Functions
-        function showLoginPage() {
-            renderPage('login');
-        }
-
-        function showTopicsScreen() {
-            renderPage('topics');
-        }
-
-        function showNewsHeadlines() {
-            renderPage('headlines');
-        }
-
-        function showNewsContext() {
-            renderPage('context');
-        }
-
-        // Render Function
-        function renderPage(pageName) {
-            const appContainer = document.getElementById('app');
-            appContainer.innerHTML = pages[pageName];
+        // Wait for DOM to be ready
+        document.addEventListener('DOMContentLoaded', function() {
+            // Render all pages
+            renderAllPages();
             
-            // Initialize page-specific event listeners
-            initializePageListeners(pageName);
+            // Initialize interactive elements
+            initializeInteractions();
+        });
+
+        function renderAllPages() {
+            const containers = document.querySelectorAll('[data-page]');
+            containers.forEach(container => {
+                const pageName = container.getAttribute('data-page');
+                container.innerHTML = pages[pageName];
+            });
         }
 
-        // Initialize Page-specific Event Listeners
-        function initializePageListeners(pageName) {
-            if (pageName === 'topics') {
-                // Topic Selection
-                document.querySelectorAll('button').forEach(button => {
-                    if (!button.hasAttribute('onclick')) {
-                        button.addEventListener('click', () => {
-                            button.classList.toggle('bg-blue-500');
-                            button.classList.toggle('text-white');
-                            button.classList.toggle('border-blue-500');
-                        });
-                    }
-                });
-
-                // Source Selection
-                document.querySelectorAll('.grid > div').forEach(source => {
-                    source.addEventListener('click', () => {
-                        source.classList.toggle('border-blue-500');
-                        source.classList.toggle('bg-blue-50');
+        function initializeInteractions() {
+            // Topic Selection
+            document.querySelectorAll('button').forEach(button => {
+                if (!button.hasAttribute('onclick')) {
+                    button.addEventListener('click', () => {
+                        button.classList.toggle('bg-blue-500');
+                        button.classList.toggle('text-white');
+                        button.classList.toggle('border-blue-500');
                     });
-                });
-            }
+                }
+            });
 
-            if (pageName === 'headlines') {
-                // Category Selection
-                const categoryButtons = document.querySelectorAll('.rounded-full');
-                categoryButtons.forEach(button => {
-                    if (!button.classList.contains('bg-blue-500')) {
-                        button.addEventListener('click', () => {
-                            categoryButtons.forEach(b => {
-                                b.classList.remove('bg-blue-500', 'text-white');
-                                b.classList.add('bg-gray-100');
-                            });
-                            button.classList.remove('bg-gray-100');
-                            button.classList.add('bg-blue-500', 'text-white');
+            // Source Selection
+            document.querySelectorAll('.grid > div').forEach(source => {
+                source.addEventListener('click', () => {
+                    source.classList.toggle('border-blue-500');
+                    source.classList.toggle('bg-blue-50');
+                });
+            });
+
+            // Category Selection
+            document.querySelectorAll('.rounded-full').forEach(button => {
+                if (!button.classList.contains('bg-blue-500')) {
+                    button.addEventListener('click', () => {
+                        const categoryButtons = button.parentElement.querySelectorAll('.rounded-full');
+                        categoryButtons.forEach(b => {
+                            b.classList.remove('bg-blue-500', 'text-white');
+                            b.classList.add('bg-gray-100');
                         });
-                    }
-                });
-            }
+                        button.classList.remove('bg-gray-100');
+                        button.classList.add('bg-blue-500', 'text-white');
+                    });
+                }
+            });
         }
-
-        // Initialize app with login page
-        document.addEventListener('DOMContentLoaded', showLoginPage);
     </script>
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="text-center mb-12">
+        <h1 class="text-3xl font-bold mb-2">NewsPulse Pro - Development View</h1>
+        <p class="text-gray-600">All pages displayed for iPhone 15 Pro Max (430x932)</p>
+    </div>
+
+    <div class="grid grid-cols-2 gap-16 max-w-[1800px] mx-auto">
+        <!-- Login Page -->
+        <div class="bg-white rounded-3xl shadow-lg overflow-hidden relative">
+            <div class="device-info">iPhone 15 Pro Max - 430x932</div>
+            <div class="frame-label">Login Screen</div>
+            <div class="bg-blue-500 text-white px-6 py-3">
+                <h2 class="font-semibold">Login Page</h2>
+            </div>
+            <div class="p-4">
+                <div class="iphone-frame mx-auto" data-page="login">
+                </div>
+            </div>
+        </div>
+
+        <!-- Topics Page -->
+        <div class="bg-white rounded-3xl shadow-lg overflow-hidden relative">
+            <div class="device-info">iPhone 15 Pro Max - 430x932</div>
+            <div class="frame-label">Topics & Sources Screen</div>
+            <div class="bg-blue-500 text-white px-6 py-3">
+                <h2 class="font-semibold">Topics & Sources Page</h2>
+            </div>
+            <div class="p-4">
+                <div class="iphone-frame mx-auto" data-page="topics">
+                </div>
+            </div>
+        </div>
+
+        <!-- Headlines Page -->
+        <div class="bg-white rounded-3xl shadow-lg overflow-hidden relative">
+            <div class="device-info">iPhone 15 Pro Max - 430x932</div>
+            <div class="frame-label">Headlines Screen</div>
+            <div class="bg-blue-500 text-white px-6 py-3">
+                <h2 class="font-semibold">Headlines Page</h2>
+            </div>
+            <div class="p-4">
+                <div class="iphone-frame mx-auto" data-page="headlines">
+                </div>
+            </div>
+        </div>
+
+        <!-- Context Page -->
+        <div class="bg-white rounded-3xl shadow-lg overflow-hidden relative">
+            <div class="device-info">iPhone 15 Pro Max - 430x932</div>
+            <div class="frame-label">Context & Opinions Screen</div>
+            <div class="bg-blue-500 text-white px-6 py-3">
+                <h2 class="font-semibold">Context & Opinions Page</h2>
+            </div>
+            <div class="p-4">
+                <div class="iphone-frame mx-auto" data-page="context">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center mt-12 text-gray-500">
+        <p>Ready for Figma export - All frames are sized exactly to iPhone 15 Pro Max dimensions (430x932)</p>
+    </div>
 </body>
 </html> 
